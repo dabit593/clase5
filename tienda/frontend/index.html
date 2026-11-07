@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mi Tienda</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <h1>Mi Tienda</h1>
+    <p id="sesion">No has iniciado sesión</p>
+    <button id="btn-salir" type="button">Cerrar sesión</button>
+    <p id="mensaje"></p>
+
+    <h2>Crear cuenta</h2>
+    <form id="form-cuenta">
+      <label>Usuario</label><br />
+      <input type="text" id="reg-usuario" /><br />
+      <label>Correo</label><br />
+      <input type="text" id="reg-email" /><br />
+      <label>Contraseña</label><br />
+      <input type="password" id="reg-password" /><br />
+      <button type="submit">Registrarme</button>
+    </form>
+
+    <h2>Iniciar sesión</h2>
+    <form id="form-login">
+      <label>Usuario</label><br />
+      <input type="text" id="login-usuario" /><br />
+      <label>Contraseña</label><br />
+      <input type="password" id="login-password" /><br />
+      <button type="submit">Entrar</button>
+    </form>
+
+    <h2>Productos</h2>
+    <form id="form-producto">
+      <input type="hidden" id="id-producto" />
+      <label>Nombre</label><br />
+      <input type="text" id="nombre" /><br />
+      <label>Descripción</label><br />
+      <input type="text" id="descripcion" /><br />
+      <label>Precio</label><br />
+      <input type="text" id="precio" /><br />
+      <label>Stock</label><br />
+      <input type="text" id="stock" /><br />
+      <button type="submit">Guardar producto</button>
+      <button id="btn-cancelar" type="button">Cancelar</button>
+    </form>
+
+    <table border="1">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Descripción</th>
+          <th>Precio</th>
+          <th>Stock</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="tabla-productos"></tbody>
+    </table>
+
+    <script src="app.js"></script>
+  </body>
+</html>

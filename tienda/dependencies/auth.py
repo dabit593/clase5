@@ -1,0 +1,55 @@
+import jwt
+
+from typing import Annotated
+from fastapi import Depends, HTTPException, status
+from fastapi.security import OAuth2PasswordBearer
+from sqlmodel import select
+
+from db.database import SessionDep
+from core.config import SECRET_KEY, ALGORITHM
+from models.usuario import Usuario
+
+oauth2_scheme = OAuth2PasswordBearer(
+    tokenUrl="/auth/login",
+    auto_error=False
+)
+
+
+def obtener_usuario_actual(
+    token: Annotated[str | None, Depends(oauth2_scheme)],
+    session: SessionDep
+):
+    if token is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="No has iniciado sesión",
+            headers={"WWW-Authenticate": "Bearer"}
+        )
+
+    error = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="No se pudo validar la autenticación",
+        headers={"WWW-Authenticate": "Bearer"}
+    )
+
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+
+        username = payload.get("sub")
+        if username is None:
+            raise error
+
+    except jwt.InvalidTokenError:
+        raise error
+
+    usuario = session.exec(
+        select(Usuario).where(Usuario.username == username)
+    ).first()
+
+    if usuario is None:
+        raise error
+
+    return usuario
+
+
+CurrentUser = Annotated[Usuario, Depends(obtener_usuario_actual)]
